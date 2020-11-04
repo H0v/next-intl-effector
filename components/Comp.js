@@ -1,5 +1,4 @@
 import { FormattedMessage } from "react-intl";
-import { useEvent } from "effector-react/ssr";
 import { setRus, setEng } from "../effector/langsStore";
 import Link from "next/link";
 
@@ -12,11 +11,15 @@ function Comp() {
         // description="Link on react page"
         values={{ test: "Artem" }}
       />
-      <Link href={"/ru"}>
+      <Link href="/" locale="ru">
         <button onClick={() => setRus()}>Rus</button>
       </Link>
-      <Link href={"/en"}>
+      <Link href="/en" locale="en">
         <button onClick={() => setEng()}>Eng</button>
+      </Link>
+
+      <Link href="/about">
+        <button>Go ABOUT</button>
       </Link>
     </>
   );

@@ -3,8 +3,8 @@ import en from "../public/static/locales/en/translate.json";
 import ru from "../public/static/locales/ru/translate.json";
 
 export const $langStore = appDomain.createStore({
-  locale: "en",
-  message: en,
+  locale: "ru",
+  message: ru,
 });
 
 export const setRus = appDomain.createEvent();

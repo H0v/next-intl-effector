@@ -1,7 +1,25 @@
 import "../styles/globals.css";
+import { IntlProvider } from "react-intl";
 
+//PluralRules
+import "@formatjs/intl-pluralrules/polyfill";
+import "@formatjs/intl-pluralrules/locale-data/ru";
+import "@formatjs/intl-pluralrules/locale-data/en";
+
+//Numberformats
+import "@formatjs/intl-numberformat/polyfill";
+import "@formatjs/intl-numberformat/locale-data/ru";
+import "@formatjs/intl-numberformat/locale-data/en";
+
+//DateTimeFormats
+import "@formatjs/intl-datetimeformat/polyfill-force";
+import "@formatjs/intl-datetimeformat/locale-data/ru.js";
+import "@formatjs/intl-datetimeformat/add-all-tz";
+
+import { useStore } from "effector-react";
+import { $langStore } from "../effector/langsStore";
 import { Provider } from "effector-react/ssr";
-import { fork, serialize, Scope } from "effector";
+import { fork, serialize } from "effector";
 import { appDomain } from "../effector/appDomain";
 
 if (typeof window !== "undefined") {
@@ -18,6 +36,8 @@ if (typeof window !== "undefined") {
 let currentScope;
 
 function MyApp({ Component, pageProps }) {
+  const language = useStore($langStore);
+
   let scope;
   if (typeof window !== "undefined") {
     let values;
@@ -32,7 +52,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider value={scope}>
-      <Component {...pageProps} />
+      <IntlProvider
+        onError={(e) => console.log(e)}
+        defaultLocale={language.locale}
+        locale={language.locale}
+        messages={language.message}
+      >
+        <Component {...pageProps} />
+      </IntlProvider>
     </Provider>
   );
 }
