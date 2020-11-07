@@ -20,6 +20,7 @@ import "@formatjs/intl-datetimeformat/add-all-tz";
 //xz
 
 import { useStore } from "effector-react";
+import { ThemeProvider } from "next-themes";
 import { $langStore, setEng, setRus } from "../effector/langsStore";
 import { Provider } from "effector-react/ssr";
 import { fork, serialize } from "effector";
@@ -59,9 +60,16 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider value={scope}>
-      <IntlProvider locale={language.locale} messages={language.message}>
-        <Component {...pageProps} />
-      </IntlProvider>
+      <ThemeProvider
+        themes={["light", "dark"]}
+        disableTransitionOnChange
+        enableSystem={false}
+        defaultTheme="light"
+      >
+        <IntlProvider locale={language.locale} messages={language.message}>
+          <Component {...pageProps} />
+        </IntlProvider>
+      </ThemeProvider>
     </Provider>
   );
 }

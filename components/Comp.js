@@ -1,6 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { setRus, setEng } from "../effector/langsStore";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 function Comp() {
   const changeLangToRussian = () => {
@@ -11,6 +12,9 @@ function Comp() {
     setEng();
     localStorage.setItem("locale", JSON.stringify("en"));
   };
+
+  const { theme, setTheme } = useTheme();
+
   return (
     <>
       <FormattedMessage
@@ -25,10 +29,11 @@ function Comp() {
       <Link href="/en" locale="en">
         <button onClick={() => changeLangToEnglish()}>Eng</button>
       </Link>
-
       <Link href="/about">
         <button>Go ABOUT</button>
       </Link>
+      <button onClick={() => setTheme("light")}>Light Mode</button>
+      <button onClick={() => setTheme("dark")}>Dark Mode</button>
     </>
   );
 }
