@@ -14,17 +14,19 @@ import "@formatjs/intl-numberformat/locale-data/en";
 //DateTimeFormats
 import "@formatjs/intl-datetimeformat/polyfill-force";
 import "@formatjs/intl-datetimeformat/locale-data/ru.js";
+import "@formatjs/intl-datetimeformat/locale-data/en.js";
 import "@formatjs/intl-datetimeformat/add-all-tz";
 
+//xz
+
 import { useStore } from "effector-react";
-import { $langStore } from "../effector/langsStore";
+import { $langStore, setEng, setRus } from "../effector/langsStore";
 import { Provider } from "effector-react/ssr";
 import { fork, serialize } from "effector";
 import { appDomain } from "../effector/appDomain";
+import { useEffect } from "react";
 
 if (typeof window !== "undefined") {
-  // Temporary dynamic import
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const attachLogger = require("effector-logger/attach").attachLogger;
   attachLogger(appDomain, {
     reduxDevtools: "enabled",
@@ -36,6 +38,11 @@ if (typeof window !== "undefined") {
 let currentScope;
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    const lang = JSON.parse(localStorage.getItem("locale"));
+    lang === "en" && setEng();
+  }, []);
+
   const language = useStore($langStore);
 
   let scope;
@@ -52,12 +59,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider value={scope}>
-      <IntlProvider
-        onError={(e) => console.log(e)}
-        defaultLocale={language.locale}
-        locale={language.locale}
-        messages={language.message}
-      >
+      <IntlProvider locale={language.locale} messages={language.message}>
         <Component {...pageProps} />
       </IntlProvider>
     </Provider>
